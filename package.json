@@ -4,6 +4,7 @@
   "description": "An API to store information on my fictional e-commerce shop where I sell movie posters.",
   "main": "index.js",
   "scripts": {
+    "start": "node cineposters.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Renee Lane",
