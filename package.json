@@ -13,6 +13,9 @@
     "@prisma/client": "^5.22.0",
     "bcrypt": "^5.1.1",
     "express": "^4.21.1",
-    "prisma": "^5.22.0"
+    "prisma": "^5wai.22.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
