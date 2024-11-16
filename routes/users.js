@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 // signup route
 router.post('/signup', (req, res) => {

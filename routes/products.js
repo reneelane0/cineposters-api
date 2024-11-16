@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 // get all products
-router.get('/all', (req, res) => {
+router.get('/all', async (req, res) => {
     // fetching products functionality
 });
 
