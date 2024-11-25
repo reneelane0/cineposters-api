@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
+const path = require('path'); // compatibility with file paths ****
 
 // middleware
 app.use(express.json());
+// allows static image files ****
+app.use('/images', express.static(path.join(__dirname, 'public/images'))); 
 
 // routes
 const users = require('./routes/users');
