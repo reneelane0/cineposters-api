@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
-const path = require('path'); // compatibility with file paths ****
+const path = require('path'); // handling file paths ****
 
 // middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // parse url encoded data ****
 // allows static image files ****
 app.use('/images', express.static(path.join(__dirname, 'public/images'))); 
 
