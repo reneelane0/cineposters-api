@@ -16,7 +16,15 @@ const Product = mongoose.model('Product', productSchema);
 
 // get all products
 router.get('/all', async (req, res) => {
-    // fetching products functionality
+    try {
+        // fetch all products
+        const products = await Product.find();
+        // send back array of products
+        res.status(200).json(products);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error getting all products. "});
+    }
 });
 
 //get products by id
