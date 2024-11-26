@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const Product = require('../models/product');
+const { default: mongoose } = require('mongoose');
 
 // get all products ****
 router.get('/all', async (req, res) => {
@@ -16,13 +17,18 @@ router.get('/all', async (req, res) => {
 });
 
 //get product by id ****
-router.get('/:id', (req, res) => {
-    const productID = ParseInt(req.params.id); // convert id from string to int
-    if (isNaN(productID)) {
-        return res.status(400).json({ error: "Invalid product ID. "});
+router.get('/:id', async (req, res) => {
+    
+    const productID = req.params.id; 
+
+    const parsedProductID = parseInt(productID);
+    if (isNaN(parsedProductID)) {
+        return res.status(400).json({ error: "Invalid product ID." });
     }
+
     try {
-        // fetch product if found
+        // fetch product by product_id 
+        const product = await Product.findOne({ product_id: parsedProductID }); 
         if (!product) {
             return res.status(404).json({ error: "Product not found." });
         }
