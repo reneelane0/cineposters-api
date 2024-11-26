@@ -105,14 +105,36 @@ router.post('/login', async (req, res) => {
     }    
 });
 
-// logout route
+// logout route ****
 router.post('/logout', (req, res) => {
-    // logout functionality
+    if (req.session.user) {
+        // detsroy session
+        req.session.destroy(err => {
+            if (err) {
+                console.error('Error ending session: ', err);
+                return res.status(500).json({ error: 'Failure logging out. '});
+            }
+            res.status(200).json({ message: 'Logout successful!' });
+        });
+    } else {
+        res.status(400).json({ error: 'No user session to log out from.' });
+    }
 });
 
 // get session route
 router.get('/getSession', (req, res) => {
-    // getting user session functionality
+    if (req.session.user) {
+        // return user session data
+        res.status(200).json({
+            customer_id: req.session.user.customer_id,
+            email: req.session.user.email,
+            first_name: req.session.user.first_name,
+            last_name: req.session.user.last_name
+        });
+    } else {
+        // if user if not logged in
+        res.status(401).json({ error: 'User not logged in.' });
+    }
 });
 
 module.exports = router;

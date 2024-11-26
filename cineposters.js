@@ -23,8 +23,10 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use(session({
     secret: 'secret',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
+    saveUninitialized: false,
+    cookie: { 
+        secure: false
+    }
 }));
 // configure CORS 
 app.use(cors({
