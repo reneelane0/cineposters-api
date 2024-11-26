@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const passwordValidator = require('password-validator');
 
 // user schema definition
 const userSchema = new mongoose.Schema({
@@ -15,10 +16,20 @@ const userSchema = new mongoose.Schema({
 // create user model
 const User = mongoose.model('User', userSchema);
 
+// create password schema with validation rules
+const passwordSchema = new passwordValidator();
+
+// define pass policy
+passwordSchema
+    .is().min(8)
+    .is().max(20)
+    .has().lowercase()
+    .has().uppercase()
+    .has().digits()
+    .has().not().spaces();
+
 // signup route
 router.post('/signup', async (req, res) => {
-
-    // signup functionality
     const { email, password, first_name, last_name } = req.body;
     
     // input validation
@@ -26,9 +37,14 @@ router.post('/signup', async (req, res) => {
         return res.status(400).json({error: "Please fill out all fields." });
     }
 
+    // validate password
+    if (!passwordSchema.validate(password)) {
+        return res.status(400).json({ error: "Password must be 8-20 characters, include both uppercase and lowercase character(s), and no spaces." });
+    }
+
     try {
         // check if email is already in db
-        const existingEmail = await User.findOneAndDelete({ email });
+        const existingEmail = await User.findOne({ email });
         if (existingEmail) {
             return res.status(400).json({ error: "This email already exists." });
         }
