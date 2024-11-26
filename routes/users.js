@@ -1,8 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+
+// user schema definition
+const userSchema = new mongoose.Schema({
+    customer_id: { type: Number, required: true, unique: true },
+    email: { type: String, required: true, unique: true} ,
+    password: { type: String, required: true },
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true }
+});
+
+// create user model
+const User = mongoose.model('User', userSchema);
 
 // signup route
 router.post('/signup', async (req, res) => {
@@ -17,27 +28,24 @@ router.post('/signup', async (req, res) => {
 
     try {
         // check if email is already in db
-        const existingEmail = await prisma.customer.findUnique({
-            where: { email }
-        });
-
+        const existingEmail = await User.findOneAndDelete({ email });
         if (existingEmail) {
-            return res.status(404).json({ error: "This email already exists." });
+            return res.status(400).json({ error: "This email already exists." });
         }
 
         // bcrypt
         const encryptedPass = await bcrypt.hash(password, 10); 
 
         // create user
-        const newUser = await prisma.customer.create({
-            data : {
-                email,
-                password: encryptedPass,
-                first_name,
-                last_name,
-            },
+        const newUser = new User({
+            email,
+            password: encryptedPass,
+            first_name,
+            last_name,
+           
         });
 
+        await newUser.save();
         res.status(201).json({ message: "Signup successful!" , user: newUser});
     } catch (error) {
         console.error(error);
@@ -58,9 +66,7 @@ router.post('/login', async (req, res) => {
 
     try {
         // check if user exists
-        const user = await prisma.customer.findUnique({
-            where: { email }
-        });
+        const user = await User.findOne({ email });
 
         // if user isn't in db then error
         if (!user) {

@@ -10,10 +10,9 @@
   "author": "Renee Lane",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.22.0",
     "bcrypt": "^5.1.1",
     "express": "^4.21.1",
-    "prisma": "^5wai.22.0"
+    "mongoose": "^8.8.2"
   },
   "prisma": {
     "seed": "node prisma/seed.js"

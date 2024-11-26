@@ -1,6 +1,16 @@
 const express = require('express');
+const mongoose = require('mongoose'); // ****
 const app = express();
 const path = require('path'); // handling file paths ****
+
+// connect to mongodb
+mongoose.connect('mongodb://127.0.0.1:27017/cineposters', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then(() => console.log('Connected to MongoDB!'))
+    .catch(err => console.error('Failedto connect to MongoDB:', err));
+    
 
 // middleware
 app.use(express.json());

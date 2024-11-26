@@ -1,5 +1,15 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const mongoose = rewquire('mongoose');
+const Product = require('./models/product');
+
+// connect to mongodb
+mongoose.connect('mongodb://localhost:27017/cineposters')
+    .then(() => {
+        console.log('Connected to MongoDB!');
+    })
+    .catch(err => {
+        console.error('Error connecting to MongoDB: ', err);
+    });
+
 
 async function main() {
     // product data
@@ -17,17 +27,14 @@ async function main() {
     ];
 
     // enter products to db
-    for (const product of products) {
-        await prisma.product.create({
-            data: product
-        });
+    try {
+        await Product.insertMany(products);
+        console.log('Products added successfully!');
+    } catch (error) {
+        console.error('Error adding products: ', error);
+    } finally {
+        mongoose.disconnect();
     }
 }
 
-main()
-    .catch((e) => {
-        throw e
-    })
-    .finally(async () => {
-        await prisma.$disconnect()
-    });
+main();
