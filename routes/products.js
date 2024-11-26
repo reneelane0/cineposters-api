@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema({
 // create product model
 const Product = mongoose.model('Product', productSchema);
 
-// get all products
+// get all products ****
 router.get('/all', async (req, res) => {
     try {
         // fetch all products
@@ -27,9 +27,23 @@ router.get('/all', async (req, res) => {
     }
 });
 
-//get products by id
+//get product by id
 router.get('/:id', (req, res) => {
-    // fetching products functionality
+    const productID = ParseInt(req.params.id); // convert id from string to int
+    if (isNaN(productID)) {
+        return res.status(400).json({ error: "Invalid product ID. "});
+    }
+    try {
+        // fetch product if found
+        if (!product) {
+            return res.status(404).json({ error: "Product not found." });
+        }
+        // return product as json response
+        res.status(200).json(product);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error fetching product by ID." });
+    }
 });
 
 // purchase product
