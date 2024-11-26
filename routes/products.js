@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
-const { default: mongoose } = require('mongoose');
 
 // get all products ****
 router.get('/all', async (req, res) => {

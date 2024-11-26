@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Product = require('../models/product');
 const Purchase = require('../models/purchase');
 const PurchaseItem = require('../models/purchaseItem');
 const router = express.Router();
