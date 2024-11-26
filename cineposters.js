@@ -28,6 +28,7 @@ app.use(session({
         secure: false
     }
 }));
+
 // configure CORS 
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -37,10 +38,12 @@ app.use(cors({
 // routes
 const users = require('./routes/users');
 const products = require('./routes/products');
+const purchase = require('./routes/purchase');
 
 // use routes
 app.use('/users', users);
 app.use('/products', products);
+app.use('/purchase', purchase);
 
 // start server
 const PORT = 3000;
