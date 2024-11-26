@@ -36,8 +36,15 @@ router.post('/signup', async (req, res) => {
         // bcrypt
         const encryptedPass = await bcrypt.hash(password, 10); 
 
+        // function to create customer id automatically ****
+        async function generateCustomerID() {
+            const lastUser = await User.findOne().sort({ customer_id: -1 }).limit(1);
+            return lastUser ? lastUser.customer_id + 1 : 1; // increment from last user
+        }
+
         // create user
         const newUser = new User({
+            customer_id: await generateCustomerID(),
             email,
             password: encryptedPass,
             first_name,
