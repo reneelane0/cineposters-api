@@ -27,7 +27,7 @@ router.get('/all', async (req, res) => {
     }
 });
 
-//get product by id
+//get product by id ****
 router.get('/:id', (req, res) => {
     const productID = ParseInt(req.params.id); // convert id from string to int
     if (isNaN(productID)) {

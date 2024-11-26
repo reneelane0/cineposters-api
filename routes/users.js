@@ -81,12 +81,21 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: "Incorrect password. "});
         }
 
-        // return email if login is successful
-        res.status(200).json({ message: "Login successful!", email: user.email });
+        // add now authenticated user's data to session ****
+        req.session.user = {
+            customer_id: user.customer_id,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name
+        };
+
+        res.status(200).json({
+            message: "Login successful!",  
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error processing login request." });
-    }
+    }    
 });
 
 // logout route
